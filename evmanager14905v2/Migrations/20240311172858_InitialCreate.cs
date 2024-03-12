@@ -29,8 +29,8 @@ namespace evmanager14905v2.Migrations
                 {
                     RatingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false)
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,7 +46,8 @@ namespace evmanager14905v2.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_EventRatings_EventId",
                 table: "EventRatings",
-                column: "EventId");
+                column: "EventId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

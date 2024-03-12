@@ -58,7 +58,8 @@ namespace evmanager14905v2.Migrations
 
                     b.HasKey("RatingId");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("EventId")
+                        .IsUnique();
 
                     b.ToTable("EventRatings");
                 });
@@ -66,8 +67,8 @@ namespace evmanager14905v2.Migrations
             modelBuilder.Entity("evmanager14905v2.Models.EventRating", b =>
                 {
                     b.HasOne("evmanager14905v2.Models.Event", "Event")
-                        .WithMany("Ratings")
-                        .HasForeignKey("EventId")
+                        .WithOne("EventRating")
+                        .HasForeignKey("evmanager14905v2.Models.EventRating", "EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -76,7 +77,8 @@ namespace evmanager14905v2.Migrations
 
             modelBuilder.Entity("evmanager14905v2.Models.Event", b =>
                 {
-                    b.Navigation("Ratings");
+                    b.Navigation("EventRating")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

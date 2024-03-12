@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using evmanager14905v2.Data;
+﻿using evmanager14905v2.Data;
 using evmanager14905v2.Interfaces;
 using evmanager14905v2.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace evmanager14905v2.Repositories
 {
@@ -33,13 +33,14 @@ namespace evmanager14905v2.Repositories
 
         public double GetAverageEventRating(int eventId)
         {
-            var eventRatings = _context.EventRatings.Where(er => er.RatingId == eventId).Select(er => er.Rating);
+            var eventRatings = _context.EventRatings.Where(er => er.EventId == eventId).Select(er => er.Rating);
             return eventRatings.Any() ? eventRatings.Average() : 0;
         }
 
         public string GetEventName(int eventId)
         {
-            return _context.Events.Where(e => e.EventId == eventId).Select(e => e.Name).FirstOrDefault();
+            var eventName = _context.Events.Where(e => e.EventId == eventId).Select(e => e.Name).FirstOrDefault();
+            return eventName ?? string.Empty;
         }
 
         public bool EventExists(int eventId)
@@ -62,7 +63,6 @@ namespace evmanager14905v2.Repositories
             }
             catch (Exception)
             {
-               
                 return false;
             }
         }
@@ -77,7 +77,6 @@ namespace evmanager14905v2.Repositories
             }
             catch (Exception)
             {
-             
                 return false;
             }
         }
@@ -97,7 +96,6 @@ namespace evmanager14905v2.Repositories
             }
             catch (Exception)
             {
-              
                 return false;
             }
         }
@@ -110,7 +108,6 @@ namespace evmanager14905v2.Repositories
             }
             catch (Exception)
             {
-             
                 return false;
             }
         }

@@ -1,5 +1,5 @@
-﻿using evmanager14905v2.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using evmanager14905v2.Models;
 
 namespace evmanager14905v2.Data
 {
@@ -13,14 +13,13 @@ namespace evmanager14905v2.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<EventRating> EventRatings { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Event>().HasKey(pc => pc.EventId);
-            modelBuilder.Entity<EventRating>().HasKey(pc => pc.RatingId);
-            modelBuilder.Entity<EventRating>().HasOne(p => p.Event);
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.EventRating)
+                .WithOne(er => er.Event)
+                .HasForeignKey<EventRating>(er => er.EventId);
         }
     }
-
-    
 }
+

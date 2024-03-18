@@ -30,55 +30,57 @@ namespace evmanager14905v2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"), 1L, 1);
 
+                    b.Property<DateTime?>("CompletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EventRatingEventId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ratingID")
+                        .HasColumnType("int");
+
                     b.HasKey("EventId");
+
+                    b.HasIndex("EventRatingEventId");
 
                     b.ToTable("Events");
                 });
 
             modelBuilder.Entity("evmanager14905v2.Models.EventRating", b =>
                 {
-                    b.Property<int>("RatingId")
+                    b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingId"), 1L, 1);
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"), 1L, 1);
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.HasKey("RatingId");
+                    b.Property<int>("RatingId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("EventId")
-                        .IsUnique();
+                    b.HasKey("EventId");
 
                     b.ToTable("EventRatings");
                 });
 
-            modelBuilder.Entity("evmanager14905v2.Models.EventRating", b =>
+            modelBuilder.Entity("evmanager14905v2.Models.Event", b =>
                 {
-                    b.HasOne("evmanager14905v2.Models.Event", "Event")
-                        .WithOne("EventRating")
-                        .HasForeignKey("evmanager14905v2.Models.EventRating", "EventId")
+                    b.HasOne("evmanager14905v2.Models.EventRating", "EventRating")
+                        .WithMany()
+                        .HasForeignKey("EventRatingEventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Event");
-                });
-
-            modelBuilder.Entity("evmanager14905v2.Models.Event", b =>
-                {
-                    b.Navigation("EventRating")
-                        .IsRequired();
+                    b.Navigation("EventRating");
                 });
 #pragma warning restore 612, 618
         }

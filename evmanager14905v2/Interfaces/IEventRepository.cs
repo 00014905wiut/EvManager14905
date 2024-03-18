@@ -8,13 +8,12 @@ namespace evmanager14905v2.Interfaces
     {
         ICollection<Event> GetEvents();
         Event GetEvent(int eventId);
-        Event GetEventByName(string eventName);
-        double GetAverageEventRating(int eventId);
         string GetEventName(int eventId);
         bool EventExists(int eventId);
         ICollection<Event> GetEventsForDate(DateTime eventDate);
         bool CreateEvent(Event newEvent);
         bool UpdateEvent(Event updatedEvent);
+        int GetEventRating(int eventId);
         bool DeleteEvent(int eventId);
         bool SaveChanges();
     }

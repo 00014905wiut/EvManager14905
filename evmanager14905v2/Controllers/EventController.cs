@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using evmanager14905v2.Interfaces;
+﻿using evmanager14905v2.Interfaces;
 using evmanager14905v2.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
@@ -18,62 +18,115 @@ namespace evmanager14905v2.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetEvents()
+        public ActionResult<IEnumerable<EventWithRating>> GetEvents()
         {
             var events = _eventRepository.GetEvents();
-            return Ok(events);
+
+            
+            var eventsWithRatings = new List<EventWithRating>();
+
+            
+            foreach (var evnt in events)
+            {
+                
+                var rating = _eventRepository.GetEventRating(evnt.EventId);
+
+                
+                var eventWithRating = new EventWithRating
+                {
+                    EventId = evnt.EventId,
+                    Name = evnt.Name,
+                    CreatedAt = evnt.CreatedAt,
+                    CompletedDate = evnt.CompletedDate,
+                    EventRating = rating
+                };
+
+               
+                eventsWithRatings.Add(eventWithRating);
+            }
+
+            return Ok(eventsWithRatings);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetEvent(int id)
+        public ActionResult<EventWithRating> GetEvent(int id)
         {
-            var @event = _eventRepository.GetEvent(id);
-            if (@event == null)
+            var evnt = _eventRepository.GetEvent(id);
+            if (evnt == null)
+            {
                 return NotFound();
-            return Ok(@event);
+            }
+
+           
+            var rating = _eventRepository.GetEventRating(id);
+
+          
+            var eventWithRating = new EventWithRating
+            {
+                EventId = evnt.EventId,
+                Name = evnt.Name,
+                CreatedAt = evnt.CreatedAt,
+                CompletedDate = evnt.CompletedDate,
+                EventRating = rating
+            };
+
+            return Ok(eventWithRating);
         }
 
         [HttpPost]
-        public IActionResult CreateEvent(Event newEvent)
+        public ActionResult<Event> CreateEvent(Event newEvent)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
-
+            }
             if (_eventRepository.CreateEvent(newEvent))
+            {
                 return CreatedAtAction(nameof(GetEvent), new { id = newEvent.EventId }, newEvent);
-
-            return StatusCode(500, "Could not create the event.");
+            }
+            return StatusCode(500);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateEvent(int id, Event updatedEvent)
+        public ActionResult<Event> UpdateEvent(int id, Event updatedEvent)
         {
             if (id != updatedEvent.EventId)
-                return BadRequest("Event ID mismatch.");
-
+            {
+                return BadRequest();
+            }
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
-
-            if (!_eventRepository.EventExists(id))
-                return NotFound();
-
-            if (_eventRepository.UpdateEvent(updatedEvent))
-                return NoContent();
-
-            return StatusCode(500, "Could not update the event.");
+            }
+            if (!_eventRepository.UpdateEvent(updatedEvent))
+            {
+                return StatusCode(500);
+            }
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteEvent(int id)
+        public ActionResult<Event> DeleteEvent(int id)
         {
-            var existingEvent = _eventRepository.GetEvent(id);
-            if (existingEvent == null)
+            if (!_eventRepository.EventExists(id))
+            {
                 return NotFound();
-
-            if (_eventRepository.DeleteEvent(id))
-                return NoContent();
-
-            return StatusCode(500, "Could not delete the event.");
+            }
+            if (!_eventRepository.DeleteEvent(id))
+            {
+                return StatusCode(500);
+            }
+            return NoContent();
         }
+    }
+
+    // Define a new class to represent the response with event details and rating
+    public class EventWithRating
+    {
+        public int EventId { get; set; }
+        public string Name { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? CompletedDate { get; set; }
+        public double EventRating { get; set; } // Assuming the rating is a double
     }
 }

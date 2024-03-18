@@ -9,7 +9,6 @@ namespace evmanager14905v2.Interfaces
         ICollection<EventRating> GetEventRatings();
         EventRating GetEventRating(int eventRatingId);
         ICollection<EventRating> GetEventRatingsForEvent(int eventId);
-        double GetAverageEventRating(int eventId);
         bool EventRatingExists(int eventRatingId);
         bool CreateEventRating(EventRating newEventRating);
         bool UpdateEventRating(EventRating updatedEventRating);

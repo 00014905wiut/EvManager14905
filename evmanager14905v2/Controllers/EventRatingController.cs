@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using evmanager14905v2.Interfaces;
+﻿using evmanager14905v2.Interfaces;
 using evmanager14905v2.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 
 namespace evmanager14905v2.Controllers
 {
@@ -17,62 +18,67 @@ namespace evmanager14905v2.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetEventRatings()
+        public ActionResult<IEnumerable<EventRating>> GetEventRatings()
         {
-            var eventRatings = _eventRatingRepository.GetEventRatings();
-            return Ok(eventRatings);
+            var ratings = _eventRatingRepository.GetEventRatings();
+            return Ok(ratings);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetEventRating(int id)
+        public ActionResult<EventRating> GetEventRating(int id)
         {
-            var eventRating = _eventRatingRepository.GetEventRating(id);
-            if (eventRating == null)
+            var rating = _eventRatingRepository.GetEventRating(id);
+            if (rating == null)
+            {
                 return NotFound();
-            return Ok(eventRating);
+            }
+            return Ok(rating);
         }
 
         [HttpPost]
-        public IActionResult CreateEventRating(EventRating newEventRating)
+        public ActionResult<EventRating> CreateEventRating(EventRating newEventRating)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
-
+            }
             if (_eventRatingRepository.CreateEventRating(newEventRating))
+            {
                 return CreatedAtAction(nameof(GetEventRating), new { id = newEventRating.RatingId }, newEventRating);
-
-            return StatusCode(500, "Could not create the event rating.");
+            }
+            return StatusCode(500);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateEventRating(int id, EventRating updatedEventRating)
+        public ActionResult<EventRating> UpdateEventRating(int id, EventRating updatedEventRating)
         {
             if (id != updatedEventRating.RatingId)
-                return BadRequest("Rating ID mismatch.");
-
+            {
+                return BadRequest();
+            }
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
-
-            if (!_eventRatingRepository.EventRatingExists(id))
-                return NotFound();
-
-            if (_eventRatingRepository.UpdateEventRating(updatedEventRating))
-                return NoContent();
-
-            return StatusCode(500, "Could not update the event rating.");
+            }
+            if (!_eventRatingRepository.UpdateEventRating(updatedEventRating))
+            {
+                return StatusCode(500);
+            }
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteEventRating(int id)
+        public ActionResult<EventRating> DeleteEventRating(int id)
         {
-            var existingEventRating = _eventRatingRepository.GetEventRating(id);
-            if (existingEventRating == null)
+            if (!_eventRatingRepository.EventRatingExists(id))
+            {
                 return NotFound();
-
-            if (_eventRatingRepository.DeleteEventRating(id))
-                return NoContent();
-
-            return StatusCode(500, "Could not delete the event rating.");
+            }
+            if (!_eventRatingRepository.DeleteEventRating(id))
+            {
+                return StatusCode(500);
+            }
+            return NoContent();
         }
     }
 }

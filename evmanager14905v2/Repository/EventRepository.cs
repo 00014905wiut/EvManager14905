@@ -111,5 +111,11 @@ namespace evmanager14905v2.Repositories
                 return false;
             }
         }
+
+        public int GetEventRating(int eventId)
+        {
+            var eventRating = _context.EventRatings.FirstOrDefault(er => er.EventId == eventId);
+            return eventRating?.Rating ?? 0;
+        }
     }
 }

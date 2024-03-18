@@ -16,9 +16,9 @@ namespace evmanager14905v2.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Event>()
-                .HasOne(e => e.EventRating)
-                .WithOne(er => er.Event)
-                .HasForeignKey<EventRating>(er => er.EventId);
+                .HasOne(e => e.EventRating);
+              
+           
         }
     }
 }

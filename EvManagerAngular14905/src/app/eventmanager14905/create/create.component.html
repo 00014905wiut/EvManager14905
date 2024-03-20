@@ -1,0 +1,36 @@
+<div class="p-8 mt-8 flex justify-center">
+  <form class="shadow border w-4/12 p-4">
+      <div class="flex">
+          <mat-form-field class="w-full">
+              <mat-label>Title </mat-label>
+              <input matInput name="title" type="text" [(ngModel)]="createFeature.name">
+          </mat-form-field>
+      </div>
+      <div class="flex">
+        <mat-form-field>
+          <input matInput [matDatepicker]="createdAtPicker" placeholder="Choose a date" name="createdAt" [(ngModel)]="createFeature.createdAt">
+          <mat-datepicker-toggle matSuffix [for]="createdAtPicker"></mat-datepicker-toggle>
+          <mat-datepicker #createdAtPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="flex">
+        <mat-form-field>
+          <input matInput [matDatepicker]="completedDatePicker" placeholder="Choose a date"  name="completedDate" [(ngModel)]="createFeature.completedDate">
+          <mat-datepicker-toggle matSuffix [for]="completedDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #completedDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="flex">
+          <mat-form-field class="w-full">
+              <mat-label>Event Rating</mat-label>
+              <input matInput name="eventRating" type="text" [(ngModel)]="createFeature.eventRating.rating">
+          </mat-form-field>
+      </div>
+      <div class="flex justify-around">
+          <button mat-raised-button color="primary" (click)="create()">Save</button>
+      </div>
+  </form>
+</div>
+
+

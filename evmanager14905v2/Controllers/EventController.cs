@@ -120,13 +120,13 @@ namespace evmanager14905v2.Controllers
         }
     }
 
-    // Define a new class to represent the response with event details and rating
+    
     public class EventWithRating
     {
         public int EventId { get; set; }
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedDate { get; set; }
-        public double EventRating { get; set; } // Assuming the rating is a double
+        public double EventRating { get; set; } 
     }
 }

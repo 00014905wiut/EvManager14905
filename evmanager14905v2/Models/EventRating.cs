@@ -12,7 +12,9 @@ namespace evmanager14905v2.Models
         [Key] 
         public int EventId { get; set; }
 
-        
-             
+
+
+
+
     }
 }

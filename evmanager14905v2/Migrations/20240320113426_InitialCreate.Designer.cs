@@ -12,7 +12,7 @@ using evmanager14905v2.Data;
 namespace evmanager14905v2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240318174343_InitialCreate")]
+    [Migration("20240320113426_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
